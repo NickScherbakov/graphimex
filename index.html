@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренажер ЕГЭ Информатика - Граф и Таблица</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Задача №1 ЕГЭ: Сопоставление графа и таблицы смежности</h1>
+        <p class="instruction">Наведите мышку на строку таблицы или вершину графа, чтобы увидеть количество дорог. Перетащите букву на номер пункта, чтобы установить соответствие.</p>
+        
+        <div class="content">
+            <!-- Таблица слева -->
+            <div class="table-section">
+                <h2>Таблица смежности</h2>
+                <div class="table-container">
+                    <table id="adjacency-table">
+                        <thead>
+                            <tr>
+                                <th>Пункт</th>
+                                <th colspan="7">Соединения (длина дороги)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-vertex="1" data-degree="2" class="drop-zone">
+                                <td class="vertex-cell">
+                                    <span class="vertex-number">1</span>
+                                    <span class="assigned-letter"></span>
+                                </td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>4 (9)</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>7 (7)</td>
+                            </tr>
+                            <tr data-vertex="2" data-degree="2" class="drop-zone">
+                                <td class="vertex-cell">
+                                    <span class="vertex-number">2</span>
+                                    <span class="assigned-letter"></span>
+                                </td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>4 (5)</td>
+                                <td>-</td>
+                                <td>6 (11)</td>
+                                <td>-</td>
+                            </tr>
+                            <tr data-vertex="3" data-degree="1" class="drop-zone">
+                                <td class="vertex-cell">
+                                    <span class="vertex-number">3</span>
+                                    <span class="assigned-letter"></span>
+                                </td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>6 (12)</td>
+                                <td>-</td>
+                            </tr>
+                            <tr data-vertex="4" data-degree="5" class="drop-zone">
+                                <td class="vertex-cell">
+                                    <span class="vertex-number">4</span>
+                                    <span class="assigned-letter"></span>
+                                </td>
+                                <td>1 (9)</td>
+                                <td>2 (5)</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>5 (4)</td>
+                                <td>6 (13)</td>
+                                <td>7 (15)</td>
+                            </tr>
+                            <tr data-vertex="5" data-degree="3" class="drop-zone">
+                                <td class="vertex-cell">
+                                    <span class="vertex-number">5</span>
+                                    <span class="assigned-letter"></span>
+                                </td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>4 (4)</td>
+                                <td>-</td>
+                                <td>6 (10)</td>
+                                <td>7 (8)</td>
+                            </tr>
+                            <tr data-vertex="6" data-degree="4" class="drop-zone">
+                                <td class="vertex-cell">
+                                    <span class="vertex-number">6</span>
+                                    <span class="assigned-letter"></span>
+                                </td>
+                                <td>-</td>
+                                <td>2 (11)</td>
+                                <td>3 (12)</td>
+                                <td>4 (13)</td>
+                                <td>5 (10)</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr data-vertex="7" data-degree="3" class="drop-zone">
+                                <td class="vertex-cell">
+                                    <span class="vertex-number">7</span>
+                                    <span class="assigned-letter"></span>
+                                </td>
+                                <td>1 (7)</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>4 (15)</td>
+                                <td>5 (8)</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="table-tooltip" class="tooltip"></div>
+            </div>
+
+            <!-- Граф справа -->
+            <div class="graph-section">
+                <h2>Граф</h2>
+                <div class="letters-container">
+                    <div class="letter-item draggable" draggable="true" data-letter="А" data-degree="1">А</div>
+                    <div class="letter-item draggable" draggable="true" data-letter="Б" data-degree="4">Б</div>
+                    <div class="letter-item draggable" draggable="true" data-letter="В" data-degree="2">В</div>
+                    <div class="letter-item draggable" draggable="true" data-letter="Г" data-degree="2">Г</div>
+                    <div class="letter-item draggable" draggable="true" data-letter="Д" data-degree="3">Д</div>
+                    <div class="letter-item draggable" draggable="true" data-letter="Е" data-degree="3">Е</div>
+                    <div class="letter-item draggable" draggable="true" data-letter="Ж" data-degree="5">Ж</div>
+                </div>
+                <div id="network"></div>
+                <div id="graph-tooltip" class="tooltip"></div>
+            </div>
+        </div>
+
+        <div class="reset-container">
+            <button id="reset-btn" class="reset-btn">Сбросить соответствия</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
